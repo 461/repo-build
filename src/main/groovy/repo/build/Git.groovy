@@ -314,4 +314,13 @@ class Git {
         }
     }
 
+    public static final String ACTION_EXECUTE_GIT_COMMAND = 'gitExecuteGitCommand'
+
+    static void executeGitCommand(ActionContext parentContext, File dir, String command){
+        def context = parentContext.newChild(ACTION_EXECUTE_GIT_COMMAND)
+        context.withCloseable {
+            return ExecuteProcess.executeCmd0(context, dir, "git $command", false)
+        }
+    }
+
 }

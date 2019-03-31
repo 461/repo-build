@@ -209,4 +209,9 @@ class CliOptions {
         return options.mr ? options.mr : null
     }
 
+    String getGitCommand(){
+        return getRequired(options.c, "Use: -c git_command")
+    }
+
+
 }

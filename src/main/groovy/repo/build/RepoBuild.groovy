@@ -6,6 +6,7 @@ import org.apache.log4j.Logger
 import repo.build.command.AddTagToCurrentHeadsCommand
 import repo.build.command.BuildPomCommand
 import repo.build.command.CheckoutTagCommand
+import repo.build.command.ExecuteCommand
 import repo.build.command.ExportBundlesCommand
 import repo.build.command.FeatureMergeReleaseCommand
 import repo.build.command.FeatureUpdateParentCommand
@@ -76,6 +77,7 @@ class RepoBuild {
         // combo
         commandRegistry.registerCommand(new FeatureSyncComboCommand())
         commandRegistry.registerCommand(new FeatureSyncStashComboCommand())
+        commandRegistry.registerCommand(new ExecuteCommand())
 
         def usage = "usage: repo-execute -[<switch>]* \n\n" +
                 Joiner.on('\n').join(

@@ -457,6 +457,19 @@ class GitFeature {
         }
     }
 
+    public static final String ACTION_EXECUTE_GIT_COMMAND = 'gitExecuteGitCommand'
+
+    static void executeGitCommand(ActionContext parentContext, String command) {
+        def context = parentContext.newChild(ACTION_EXECUTE_GIT_COMMAND)
+        context.withCloseable {
+            forEachWithProjectDirExists(context, {
+                 ActionContext actionContext, Node project ->
+                    def dir = new File(actionContext.env.basedir, project.@path)
+                    Git.executeGitCommand(actionContext, dir, command)
+            })
+        }
+    }
+
     public static final String ACTION_CHECKOUT_TAG = 'gitFeatureCheckoutTag'
 
     static void checkoutTag(ActionContext parentContext, String tag) {

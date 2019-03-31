@@ -116,6 +116,28 @@ class GitFeatureTest extends BaseTestCase {
     }
 
     @Test
+    void testSwitchWithGitCommand() {
+        def url = new File(sandbox.env.basedir, 'manifest')
+        GitFeature.cloneManifest(context, url.getAbsolutePath(), 'master')
+
+        sandbox.component('c1',
+                { Sandbox sandbox, File dir ->
+                    Git.createBranch(sandbox.context, dir, 'feature/1')
+                })
+
+        sandbox.component('c2',
+                { Sandbox sandbox, File dir ->
+                    Git.createBranch(sandbox.context, dir, 'feature/1')
+                    Git.createBranch(sandbox.context, dir, 'feature/2')
+                })
+
+        GitFeature.sync(context)
+        GitFeature.executeGitCommand(context, "checkout feature/2")
+        assertEquals('master', Git.getBranch(context, new File(env.basedir, 'c1')))
+        assertEquals('feature/2', Git.getBranch(context, new File(env.basedir, 'c2')))
+    }
+
+    @Test
     void testSwitchTask() {
         def url = new File(sandbox.env.basedir, 'manifest')
         GitFeature.cloneManifest(context, url.getAbsolutePath(), 'master')
